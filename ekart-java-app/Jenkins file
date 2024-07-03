@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven3'
+        jdk 'jdk17'
+    }
+
+    environment {
+        SONARQUBE_ENV = 'sonar-qube' // Ensure this matches the name configured in Jenkins
+    }
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/kiritisagar/Ekart.git'
+            }
+        }
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Unit Test') {
+            steps {
+                script {
+                    try {
+                        sh 'mvn test -e'
+                    } catch (Exception e) {
+                        echo 'Some tests have failed.'
+                        currentBuild.result = 'UNSTABLE'
+                    } finally {
+                        junit 'target/surefire-reports/*.xml'  // Publish test results
+                    }
+                }
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('sonar-qube') // match with server name {
+                        withCredentials([string(credentialsId: 'sonar-auth-token', variable: 'SONAR_AUTH_TOKEN')]) {
+                            sh 'mvn sonar:sonar -Dsonar.login=${SONAR_AUTH_TOKEN}'
+                           //match with sonar- credential id
+                        }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+    }
+}

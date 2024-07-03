@@ -1,0 +1,39 @@
+# requirements
+1.server -t2.micro
+2.install maven and java
+3.install docker
+
+# steps1:
+step1:
+launch a server t2.micro and update
+install java and maven tools into server
+(apt install openjdk-17-jre-headless  # version 17.0.10~6ea-1) & (apt install maven)
+clone the repository and go to into repo
+execute maven lifecycles without test(-DskipTests=true)
+after execution get target folder and in target folder artifacry is there
+
+# step2:
+install docker 
+(apt install docker.io)
+write a docker file with copy instruction (copying of artifactory)
+build the docker image and run as container with port 8070
+(docker build -t sagar .)  & (docker run -d -p 8070:8070 sagar)
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# requirements
+1.server -t2.micro(code clone and buld code)
+2.server t2.micro(for tomcat)
+3.install maven and java
+
+# steps1:
+step1:
+launch a server t2.micro and update
+install java and maven tools into server
+(apt install openjdk-17-jre-headless  # version 17.0.10~6ea-1) & (apt install maven)
+clone the repository and go to into repo
+execute maven lifecycles without test(-DskipTests=true)
+after execution get target folder and in target folder artifacry is there
+
+# step2:
