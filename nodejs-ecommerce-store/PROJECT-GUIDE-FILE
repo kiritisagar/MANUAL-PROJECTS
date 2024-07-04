@@ -16,7 +16,7 @@ curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt install -y nodejs
 
 # Install Node.js dependencies
-apt npm install
+apt install npm
 
 5. Build the Application
 # Example build command for a Node.js application
